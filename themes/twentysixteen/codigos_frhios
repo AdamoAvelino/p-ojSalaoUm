@@ -1,0 +1,13 @@
+<select name='usuario_restrito'>
+        <option>Selecione...</option>
+        <?php
+            $users = get_users();
+            foreach($users as $user){
+                ?>
+                    <option><?php echo $user->user_login; ?> </option>
+                <?php 
+            }
+        ?>
+    
+    </select>
+    <?php
