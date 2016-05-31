@@ -1,6 +1,7 @@
 <?php get_header(); ?>
 <article id='content' role='main' class="content-area">
     <?php global $user_ID, $user_identity;
+//    echo admin_url('admin-ajax.php');
     get_currentuserinfo();
     if (!$user_ID) :
         ?>
@@ -18,16 +19,16 @@
             <p>Olá <?php echo $user_identity ?></p>
             <p><blockquote>Vamos agendar uma hora para cuidar de você?</blockquote></p>
             <div class="clear"></div>
-            <form class='user-forms'>
+            <form class='user-forms' method="post">
                 <p>
                 <select name='servico' id='servico'>
                     <option>Selecione Um Servico</option>
                     <?php 
                         global $wpdb;
-                        $lista_servicos = $wpdb->get_results('SELECT id, nome FROM wp_servicos');
+                        $lista_servicos = $wpdb->get_results('SELECT classe, nome FROM wp_servicos');
                         foreach($lista_servicos as $servico) :
                     ?>
-                    <option value="<?php  echo $servico->id ?>"><?php  echo $servico->nome ?></option>    
+                    <option value="<?php  echo $servico->classe ?>"><?php  echo $servico->nome ?></option>    
                     <?php endforeach; ?>
                 </select>
                 </p>
