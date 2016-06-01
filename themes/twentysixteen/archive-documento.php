@@ -21,24 +21,38 @@
             <div class="clear"></div>
             <form class='user-forms' method="post">
                 <p>
-                <select name='servico' id='servico'>
-                    <option>Selecione Um Servico</option>
                     <?php 
                         global $wpdb;
-                        $lista_servicos = $wpdb->get_results('SELECT classe, nome FROM wp_servicos');
-                        foreach($lista_servicos as $servico) :
+                        
+                        $lista_profissao = $wpdb->get_results("Select meta_value, meta_key from wp_usermeta where meta_key like '%profissao%' group by meta_value");
                     ?>
-                    <option value="<?php  echo $servico->classe ?>"><?php  echo $servico->nome ?></option>    
-                    <?php endforeach; ?>
-                </select>
+                        <div>
+                    <?php
+                        foreach($lista_profissao as $profissao):
+                            $titulo = explode('-',$profissao->meta_key);
+                            $legenda = $titulo[1];
+                            echo "<div style='width:32%; float:left; margin-left: 10px'>"
+                            . "<fieldset style='height: 100%'>"
+                                . "<legend>$legenda</legend>";
+                            $lista_servicos = $wpdb->get_results("SELECT classe, nome FROM wp_servicos where classe='{$profissao->meta_value}'");
+                            foreach($lista_servicos as $servico) :
+                                echo "<div style='width: 50%;  float:left;'>"
+                                . "<input type='checkbox' name='{$servico->nome}'>"
+                                . "<label style='font-size:12px; line-height: 1;' for='{$servico->nome}'>{$servico->nome}</label>"
+                                . "</div>";
+                           endforeach;
+                            echo "<select id='profissional'>
+                                    <option>Selecione Um Profissional</option>
+                                </select></fieldset>" 
+                           
+                           . "</div>";
+                        endforeach;
+                        ?>
+                            
                 </p>
-                <p>
-                <select id='profissional'>
-                    <option>Selecione Um Profissional</option>
-                </select>
-                </p>
-                <p><label for='data-agenda'>Data</label> <input name='data-agenda' class='text-input' type="date"></p>
-                <p><label for='hora-agenda'>Hora</label> <input name='hora-agenda' type="datetime" class='text-input'/></p>
+                <div class="clear"></div>
+                <p style="width: 45%; float: left; margin-left: 15px"><label for='data-agenda'>Data</label> <input name='data-agenda' class='text-input' type="date"></p>
+                <p style="width: 45%; float: left; margin-left: 15px"><label for='hora-agenda'>Hora</label> <input name='hora-agenda' type="datetime" class='text-input'/></p>
             </form>
         </div>
 <?php endif; ?>
