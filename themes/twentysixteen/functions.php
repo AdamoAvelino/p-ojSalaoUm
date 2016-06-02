@@ -287,6 +287,10 @@ function twentysixteen_scripts() {
         'expand' => __('expand child menu', 'twentysixteen'),
         'collapse' => __('collapse child menu', 'twentysixteen'),
     ));
+    
+    if(get_post_type() == 'documento'){
+        wp_enqueue_script('documento', get_template_directory_uri() . '/js/documento.js', array(), '20151112', true);
+    }
 }
 
 add_action('wp_enqueue_scripts', 'twentysixteen_scripts');
@@ -428,7 +432,7 @@ function twentysixteen_widget_tag_cloud_args($args) {
 
 add_filter('widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args');
 
-
+//-----------------------Função para inclusão do Ajax
 add_action('wp_footer', 'ajax_javascript');
 
 function ajax_javascript() {
@@ -438,7 +442,8 @@ function ajax_javascript() {
     echo $script;
     wp_enqueue_script('ajax_agenda', get_template_directory_uri() . '/js/ajax_agenda.js', array(), '', true);
 }
-
+//-------------------------------------------------------------------------
+//---------------------Função para carregar o combo funcionarios (obsoleta).
 function acao_ajax_meu() {
 //    header('content-type: text/xml');
     global $wpdb;
@@ -453,5 +458,11 @@ WHERE wm.meta_key = 'profissao' and wm.meta_value = {$_REQUEST['servico']}";
 
 add_action('wp_ajax_nopriv_acao_ajax_meu', 'acao_ajax_meu');
 add_action('wp_ajax_acao_ajax_meu', 'acao_ajax_meu');
-
+//------------------------------------------------------------------------------------------------
+//--------------------Função para fazer update da agenda
+function rn_insercao_agenda(){
+    global $wpdb;
+    
+    $query = 'INSERT INTO agenda()values()';
+}
 

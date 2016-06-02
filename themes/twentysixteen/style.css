@@ -626,7 +626,7 @@ input[type="search"],
 input[type="tel"],
 input[type="number"],
 input[type="date"],
-input[type="datetime"],
+input[type="time"],
 select,
 textarea {
 	background: #f7f7f7;
@@ -646,7 +646,7 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="number"]:focus,
 input[type="date"]:focus,
-input[type="datetime"]:focus,
+input[type="time"]:focus,
 select:focus,
 textarea:focus {
 	background-color: #fff;
@@ -3177,7 +3177,7 @@ p > video {
 	.widget input[type="tel"],
 	.widget input[type="number"],
 	.widget input[type="date"],
-        .widget input[type="datetime"],
+        .widget input[type="time"],
         .widget select,
 	.widget textarea {
 		padding: 0.4615384615em 0.5384615385em;
