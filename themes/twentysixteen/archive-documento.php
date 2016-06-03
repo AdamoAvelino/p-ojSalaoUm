@@ -47,10 +47,10 @@ WHERE wm.meta_key like '%profissao%' AND wm.meta_value = {$profissao->meta_value
                                 echo "<option value='$profissional->ID'>{$profissional->display_name}</option>";
                             }
                            echo "</select>";
-                            $lista_servicos = $wpdb->get_results("SELECT classe, nome, tempo_execucao FROM wp_servicos where classe='{$profissao->meta_value}'");
+                            $lista_servicos = $wpdb->get_results("SELECT id, classe, nome, tempo_execucao FROM wp_servicos where classe='{$profissao->meta_value}'");
                             foreach($lista_servicos as $servico) :
                                 echo "<div class='container-servicos-{$chave}' style='width: 50%;  float:left;'>"
-                                . "<input type='checkbox' id='{$servico->nome}' name='{$servico->nome}' data-tempo='{$servico->tempo_execucao}' value='{$servico->classe}'>"
+                                . "<input type='checkbox' data-classe='{$servico->classe}' name='{$servico->nome}' data-tempo='{$servico->tempo_execucao}' value='{$servico->id}'>"
                                 . "<label style='font-size:12px; line-height: 1;' for='{$servico->nome}'>{$servico->nome}</label>"
                                 . "</div>";
                            endforeach;

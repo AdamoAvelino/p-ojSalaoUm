@@ -288,6 +288,7 @@ function twentysixteen_scripts() {
         'collapse' => __('collapse child menu', 'twentysixteen'),
     ));
     
+//        wp_enqueue_script('documento', get_template_directory_uri() . '/js/documento.js', array(), '20151112', true);
     if(get_post_type() == 'documento'){
         wp_enqueue_script('documento', get_template_directory_uri() . '/js/documento.js', array(), '20151112', true);
     }

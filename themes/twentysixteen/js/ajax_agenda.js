@@ -1,8 +1,21 @@
 var ajax;
 
 window.onload = function () {
+    document.getElementById('data-agenda').onblur = function () {
+        if (this.value) {
+            document.getElementById('hora-agenda').removeAttribute('disabled');
+        } else
+        {
+            document.getElementById('hora-agenda').setAttribute('disabled', 'disabled');
+        }
+    }
+
+
+
     document.getElementById('agenda_inclusao').onclick = function () {
 
+        var data_agenda = document.getElementById('data-agenda').value;
+        var hora_agenda = document.getElementById('hora-agenda').value;
         var profissional_servico = document.getElementById('profissional-servico').childNodes.length;
 //       Verifica se é Windows Explorer
 //       Caso Seja Negado -> o contador deve ser dividido por dois 
@@ -12,26 +25,64 @@ window.onload = function () {
         }
 
         for (var p = 1; p <= profissional_servico; p++) {
+            
             var profissional = document.getElementById('profissional-' + p).value;
-        
             var container_servicos = document.getElementsByClassName('container-servicos-' + p);
             var contador_container_servicos = container_servicos.length;
+            
+            var hora_fechamento = 0;
+            var servicos_horas = new array();
             for (var sc = 0; sc < contador_container_servicos; sc++) {
 
                 var servicos = container_servicos[sc].childNodes;
                 var serv_cont = servicos.length;
-
                 for (var i = 0; i < serv_cont; i++) {
                     if (servicos[i].getAttribute('type') === 'checkbox') {
                         if (servicos[i].checked) {
-                            alert(servicos[i].value + servicos[i].getAttribute('name'));
+                            var codigo_servico = servicos[i].value;
+                            var nome_servico = servicos[i].getAttribute('name');
+                            var tempo_servico = servicos[i].getAttribute('data-tempo');
+                            var classe_servico = servicos[i].getAttribute('data-classe');
+                            if (tempo_servico) {
+                                var inicio = (i > 0) ? hora_fechamento : data_agenda;
+                                hora_fechamento = hora_fechamento + parseInt(tempo_servico);
+                                alert(hora_fechamento);
+                                    
+                                var tempo_fim_servico = complementaHoras(hora_agenda, hora_fechamento, data_agenda);
+                            }else{
+                                var tempo_fim_servico = complementaHoras(hora_agenda, 60, data_agenda);
+                            }
+                            var inicio = (i > 0) ? hora_fechamento : data_agenda;
+                            servicos_horas[sc] = ['servico'  => classe_servico, 'inicio' => '', 'fim' => ''];
                         }
                     }
+                }
+                var agenda = {
+                    "profissional": profissional,
+                    "data" : data_agenda,
+                    
                 }
             }
         }
 //        aciona_ajax(id_serv);
     }
+}
+
+function complementaHoras(horario, minutos, data) {
+   var converte_data = data.split('-');
+   for(var i =0;i < 3; i++){
+       converte_data[i] = parseInt(converte_data[i])
+   }
+   var data_convertida = converte_data.join('-'); 
+   var hora_separada = horario.split(':');
+   var horas = new Date(data_convertida);
+   var novo_horario = new Date(data_convertida);
+   horas.setHours(hora_separada[0]);
+   minutos = minutos + parseInt(hora_separada[1]);
+   horas.setMinutes(minutos);
+   var result = horas.getTime() - novo_horario.getTime();
+   var horario_retorno = parseInt(result / 3600000) + ':' + ((result % 3600000) / 60000);
+   return horario_retorno;
 }
 
 function ajaxRequest() {
