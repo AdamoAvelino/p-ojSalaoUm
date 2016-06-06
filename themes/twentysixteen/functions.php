@@ -441,6 +441,7 @@ function ajax_javascript() {
     $script .= "var ajaxUrl = '" . admin_url('admin-ajax.php') . "';";
     $script .= "</script>";
     echo $script;
+//    wp_enqueue_script('json2_ag', get_template_directory_uri() . '/js/json2.js', array(), '20160606', true);
     wp_enqueue_script('ajax_agenda', get_template_directory_uri() . '/js/ajax_agenda.js', array(), '', true);
 }
 //-------------------------------------------------------------------------

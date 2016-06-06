@@ -1,11 +1,11 @@
 var ajax;
-
+var agendaSon = {compromissos : []};
 window.onload = function () {
+    
     document.getElementById('data-agenda').onblur = function () {
         if (this.value) {
             document.getElementById('hora-agenda').removeAttribute('disabled');
-        } else
-        {
+        } else{
             document.getElementById('hora-agenda').setAttribute('disabled', 'disabled');
         }
     }
@@ -13,7 +13,7 @@ window.onload = function () {
 
 
     document.getElementById('agenda_inclusao').onclick = function () {
-
+        
         var data_agenda = document.getElementById('data-agenda').value;
         var hora_agenda = document.getElementById('hora-agenda').value;
         var profissional_servico = document.getElementById('profissional-servico').childNodes.length;
@@ -23,17 +23,17 @@ window.onload = function () {
         if (!i.test(navigator.userAgent)) {
             profissional_servico = profissional_servico / 2;
         }
-
+        var agenda_dados = new Array();
         for (var p = 1; p <= profissional_servico; p++) {
-            
+            agenda_dados[p] = []
             var profissional = document.getElementById('profissional-' + p).value;
             var container_servicos = document.getElementsByClassName('container-servicos-' + p);
             var contador_container_servicos = container_servicos.length;
             
+            var servicos_horas = new Array();
             var hora_fechamento = 0;
-            var servicos_horas = new array();
             for (var sc = 0; sc < contador_container_servicos; sc++) {
-
+                var tempo_fim_servico;
                 var servicos = container_servicos[sc].childNodes;
                 var serv_cont = servicos.length;
                 for (var i = 0; i < serv_cont; i++) {
@@ -43,30 +43,36 @@ window.onload = function () {
                             var nome_servico = servicos[i].getAttribute('name');
                             var tempo_servico = servicos[i].getAttribute('data-tempo');
                             var classe_servico = servicos[i].getAttribute('data-classe');
+                            
                             if (tempo_servico) {
-                                var inicio = (i > 0) ? hora_fechamento : data_agenda;
+                                var inicio = ((i > 0) ? tempo_fim_servico : hora_agenda);
                                 hora_fechamento = hora_fechamento + parseInt(tempo_servico);
-                                alert(hora_fechamento);
-                                    
-                                var tempo_fim_servico = complementaHoras(hora_agenda, hora_fechamento, data_agenda);
+                                tempo_fim_servico = complementaHoras(inicio, hora_fechamento, data_agenda);
                             }else{
-                                var tempo_fim_servico = complementaHoras(hora_agenda, 60, data_agenda);
+                                var inicio = hora_agenda;
+                                tempo_fim_servico = complementaHoras(hora_agenda, 60, data_agenda);
                             }
-                            var inicio = (i > 0) ? hora_fechamento : data_agenda;
-                            servicos_horas[sc] = ['servico'  => classe_servico, 'inicio' => '', 'fim' => ''];
+                            
+//                            var inicio = (i > 0) ? hora_fechamento : hora_agenda;
+                            
+                            agendaSon.compromissos.push({'profissional': profissional, 'data': data_agenda, 'servico' : classe_servico, 'inicio' : inicio, 'fim' : tempo_fim_servico});
                         }
                     }
                 }
-                var agenda = {
-                    "profissional": profissional,
-                    "data" : data_agenda,
-                    
-                }
             }
         }
-//        aciona_ajax(id_serv);
+        
+//        console.log(agendaSon);
+        var sons = JSON.stringify(agendaSon)
+//        console.log(sons);
+       
+        
+        aciona_ajax(sons);
     }
 }
+
+
+
 
 function complementaHoras(horario, minutos, data) {
    var converte_data = data.split('-');
@@ -110,12 +116,12 @@ function requisicao() {
     }
 }
 
-function aciona_ajax(id_serv) {
+function aciona_ajax(dados) {
     ajaxRequest();
     ajax.onreadystatechange = function () {
         requisicao();
     }
-    var urlVar = ajaxUrl + '?action=acao_ajax_meu&servico=' + id_serv;
+    var urlVar = ajaxUrl + '?action=acao_ajax_meu&dados=' + dados;
 //    alert(urlVar);
     ajax.open('get', urlVar);
     ajax.send(null);
