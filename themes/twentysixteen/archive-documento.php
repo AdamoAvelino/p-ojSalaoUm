@@ -18,6 +18,7 @@
         <div class='logado'>
             <p>Olá <?php echo $user_identity ?></p>
             <p><blockquote>Vamos agendar uma hora para cuidar de você?</blockquote></p>
+           
             <div class="clear"></div>
             <form class='user-forms' method="post">
                
@@ -66,6 +67,7 @@ WHERE wm.meta_key like '%profissao%' AND wm.meta_value = {$profissao->meta_value
                 <p><button type='button' id='agenda_inclusao'>Incluir Agenda</button></p>
             </form>
         </div>
+        <div id='calenhdar'></div>
 <?php endif; ?>
        
 
