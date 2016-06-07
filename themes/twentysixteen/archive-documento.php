@@ -62,6 +62,7 @@ WHERE wm.meta_key like '%profissao%' AND wm.meta_value = {$profissao->meta_value
                 <div class="clear"></div>
                 <p style="width: 45%; float: left; margin-left: 15px"><label for='data-agenda'>Data</label> <input name='data-agenda' id="data-agenda" class='text-input' type="date"></p>
                 <p style="width: 45%; float: left; margin-left: 15px"><label for='hora-agenda'>Hora</label> <input name='hora-agenda' id="hora-agenda" type="time" disabled="disabled" step='1800'/></p>
+                <input type='hidden'  id='usuario' value='<?php echo $user_ID; ?>'>
                 <p><button type='button' id='agenda_inclusao'>Incluir Agenda</button></p>
             </form>
         </div>

@@ -441,8 +441,8 @@ function ajax_javascript() {
     $script .= "var ajaxUrl = '" . admin_url('admin-ajax.php') . "';";
     $script .= "</script>";
     echo $script;
-//    wp_enqueue_script('json2_ag', get_template_directory_uri() . '/js/json2.js', array(), '20160606', true);
-    wp_enqueue_script('ajax_agenda', get_template_directory_uri() . '/js/ajax_agenda.js', array(), '', true);
+    wp_enqueue_script('json2_ag', get_template_directory_uri() . '/js/json2.js', array(), '20160606', true);
+    wp_enqueue_script('ajax_agenda', get_template_directory_uri() . '/js/ajax_agenda.js', array('json2_ag'), '', true);
 }
 //-------------------------------------------------------------------------
 //---------------------Função para carregar o combo funcionarios (obsoleta).
@@ -464,7 +464,30 @@ add_action('wp_ajax_acao_ajax_meu', 'acao_ajax_meu');
 //--------------------Função para fazer update da agenda
 function rn_insercao_agenda(){
     global $wpdb;
+    $dados = json_decode(str_replace(array("\\"),"", $_GET['dados']), true);
+    extract($dados);
+//    var_dump($compromissos);
     
-    $query = 'INSERT INTO agenda()values()';
+//    $values_operador = "values"; 
+    $erro = 0;
+    $sucesso = 0;
+    foreach($compromissos as $compromisso){
+//        var_dump($compromisso);
+        if($wpdb->insert('wp_agenda', $compromisso, array('%s', '%d'))){
+           $sucesso += 1;
+        }else{
+           $erro += 1;
+        }
+    }
+        if($erro == 0){
+           echo '{"opcao": "mensagem_box", "mensagem" :"sucesso",  "frase" : "Registro Inserido com sucesso"}';
+        }elseif($erro > 0 and $sucesso > 0){
+           echo '{"opcao": "mensagem_box", "mensagem": "alerta", "frase": "Falha na inserção de alguns registros, por favor verifique sua agenda"}';
+        }else{
+            echo '{"opcao": "mensagem_box", "mensagem": "erro", "frase": "Falha ao incluir registros, por favor tente novamente."}';
+        }
 }
+
+add_action('wp_ajax_nopriv_rn_insercao_agenda', 'rn_insercao_agenda');
+add_action('wp_ajax_rn_insercao_agenda', 'rn_insercao_agenda');
 
