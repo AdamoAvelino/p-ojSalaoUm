@@ -97,10 +97,11 @@ function ajaxRequest() {
 function requisicao() {
     if (ajax.readyState == 4) {
         if (ajax.status == 200) {
-            var resposta = JSON.parse(ajax.responseText);
-//            var resposta = ajax.responseText;
-//            alert(resposta);
-            monta_opcao(resposta);
+//            var resposta = JSON.parse(ajax.responseText);
+            var resposta = ajax.responseText;
+            pega(resposta);
+//            document.write(resposta);
+//            monta_opcao(resposta);
         }
     }
 }
@@ -109,9 +110,10 @@ function aciona_ajax(dados, metodo) {
     ajaxRequest();
     ajax.onreadystatechange = function () {
         requisicao();
+        
     }
     var urlVar = ajaxUrl+'?action='+metodo+'&dados='+dados;
-//    alert(urlVar);
+    alert(urlVar);
     ajax.open('get', urlVar);
     ajax.send(null);
 }
@@ -119,6 +121,7 @@ function aciona_ajax(dados, metodo) {
 function monta_opcao(resposta) {
     switch(resposta.opcao){
         case 'mensagem_box' : monta_mensagem_box(resposta);break;
+        case 'lista_agenda' : lista_agenda(resposta);break;
     }
     
 
@@ -126,6 +129,10 @@ function monta_opcao(resposta) {
 
 function monta_mensagem_box(objeto){
     alert(objeto.mensagem);
+}
+
+function lista_agenda(objeto){
+    
 }
 
 

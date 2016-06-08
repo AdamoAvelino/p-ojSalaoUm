@@ -67,7 +67,7 @@ WHERE wm.meta_key like '%profissao%' AND wm.meta_value = {$profissao->meta_value
                 <p><button type='button' id='agenda_inclusao'>Incluir Agenda</button></p>
             </form>
         </div>
-        <div id='calenhdar'></div>
+        <div id='calendar'></div>
 <?php endif; ?>
        
 

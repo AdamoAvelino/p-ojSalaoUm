@@ -31,7 +31,7 @@
 include_once 'includes/usuarios.php';
 include_once 'includes/cpt.php';
 include_once 'includes/meta_boxes.php';
-include_once 'includes/scripts.php';
+
 
 
 
@@ -429,3 +429,4 @@ function twentysixteen_widget_tag_cloud_args($args) {
 
 add_filter('widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args');
 
+include_once 'includes/scripts.php';
